@@ -44,14 +44,17 @@ func (p *PortalPulsa) logToFile(req *http.Request, writerform *multipart.Writer,
 	}
 }
 
-func (p *PortalPulsa) Harga() map[string]interface{} {
+func (p *PortalPulsa) Harga(code string) map[string]interface{} {
+	if code == "" {
+		code = "pulsa"
+	}
 	url := "https://portalpulsa.com/api/connect/"
 	method := "POST"
 
 	payload := &bytes.Buffer{}
 	writer := multipart.NewWriter(payload)
 	_ = writer.WriteField("inquiry", "HARGA")
-	_ = writer.WriteField("code", "pulsa")
+	_ = writer.WriteField("code", code)
 	err := writer.Close()
 	if err != nil {
 		fmt.Println(err)
